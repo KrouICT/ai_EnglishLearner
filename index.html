@@ -3,90 +3,226 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎓 AI English Learning - រៀនភាសាអង់គ្លេសជាមួយ AI</title>
+    <title>🎓 AI English Learning Pro - រៀនភាសាអង់គ្លេសជាមួយ AI</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --info: #3b82f6;
+            --dark: #1f2937;
+            --light: #f9fafb;
+        }
+
         body {
-            font-family: 'Kantumruy Pro', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Poppins', 'Kantumruy Pro', sans-serif;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             min-height: 100vh;
             padding: 20px;
+            overflow-x: hidden;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            border-radius: 30px;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.3);
             overflow: hidden;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             color: white;
-            padding: 30px;
+            padding: 40px 30px;
             text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120"><path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" fill="rgba(255,255,255,0.1)"></path></svg>') no-repeat bottom;
+            background-size: cover;
+            opacity: 0.5;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
         }
 
         .header h1 {
-            font-size: 2.5em;
+            font-size: 3em;
             margin-bottom: 10px;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
         }
 
         .header p {
-            font-size: 1.1em;
-            opacity: 0.9;
+            font-size: 1.2em;
+            opacity: 0.95;
+            font-weight: 300;
         }
 
-        .main-content {
+        .main-layout {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            padding: 30px;
+            grid-template-columns: 1fr 400px;
+            gap: 0;
+            min-height: 700px;
         }
 
-        @media (max-width: 768px) {
-            .main-content {
+        @media (max-width: 1024px) {
+            .main-layout {
                 grid-template-columns: 1fr;
+            }
+            .sidebar {
+                border-left: none !important;
+                border-top: 3px solid #e5e7eb;
             }
         }
 
-        .chat-section {
-            background: #f8f9fa;
-            border-radius: 15px;
-            padding: 20px;
+        .chat-area {
             display: flex;
             flex-direction: column;
-            height: 600px;
+            padding: 30px;
+            background: #fafafa;
+        }
+
+        .chat-header {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .language-switch {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+
+        .lang-btn {
+            padding: 12px 24px;
+            border: 2px solid var(--primary);
+            background: white;
+            color: var(--primary);
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 0.95em;
+        }
+
+        .lang-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .lang-btn.active {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-color: transparent;
+        }
+
+        .status-bar {
+            padding: 12px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: 600;
+            margin-bottom: 15px;
+            display: none;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .status-bar.listening {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            display: block;
+            animation: pulse 1.5s infinite;
+        }
+
+        .status-bar.speaking {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: white;
+            display: block;
+            animation: pulse 1.5s infinite;
+        }
+
+        .status-bar.processing {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+            display: block;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.9; transform: scale(0.98); }
         }
 
         .chat-messages {
             flex: 1;
             overflow-y: auto;
-            margin-bottom: 20px;
-            padding: 15px;
+            padding: 20px;
             background: white;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+            scroll-behavior: smooth;
+        }
+
+        .chat-messages::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .chat-messages::-webkit-scrollbar-track {
+            background: #f1f1f1;
             border-radius: 10px;
-            border: 2px solid #e9ecef;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 10px;
         }
 
         .message {
-            margin-bottom: 15px;
-            padding: 15px;
-            border-radius: 10px;
-            animation: slideIn 0.3s ease;
+            margin-bottom: 20px;
+            animation: messageSlide 0.4s ease;
+            max-width: 85%;
         }
 
-        @keyframes slideIn {
+        @keyframes messageSlide {
             from {
                 opacity: 0;
-                transform: translateY(10px);
+                transform: translateY(15px);
             }
             to {
                 opacity: 1;
@@ -95,402 +231,591 @@
         }
 
         .message.user {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            margin-left: 20%;
+            margin-left: auto;
             text-align: right;
         }
 
         .message.ai {
-            background: #e3f2fd;
-            color: #1565c0;
-            margin-right: 20%;
+            margin-right: auto;
+        }
+
+        .message-bubble {
+            display: inline-block;
+            padding: 15px 20px;
+            border-radius: 20px;
+            position: relative;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .message.user .message-bubble {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-bottom-right-radius: 5px;
+        }
+
+        .message.ai .message-bubble {
+            background: #f3f4f6;
+            color: var(--dark);
+            border-bottom-left-radius: 5px;
         }
 
         .message-header {
-            font-weight: bold;
-            margin-bottom: 8px;
-            font-size: 0.9em;
+            font-size: 0.85em;
             opacity: 0.8;
+            margin-bottom: 8px;
+            font-weight: 600;
         }
 
         .message-content {
             line-height: 1.6;
             font-size: 1em;
+            white-space: pre-wrap;
+            word-wrap: break-word;
         }
 
-        .input-area {
+        .message-time {
+            font-size: 0.75em;
+            opacity: 0.6;
+            margin-top: 5px;
+        }
+
+        .input-section {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+        }
+
+        .input-wrapper {
             display: flex;
             gap: 10px;
             margin-bottom: 15px;
         }
 
-        .input-area input {
+        .input-wrapper textarea {
             flex: 1;
-            padding: 15px;
-            border: 2px solid #667eea;
-            border-radius: 10px;
+            padding: 15px 20px;
+            border: 2px solid #e5e7eb;
+            border-radius: 15px;
             font-size: 1em;
             font-family: inherit;
+            resize: none;
+            transition: all 0.3s ease;
+            min-height: 60px;
         }
 
-        .input-area input:focus {
+        .input-wrapper textarea:focus {
             outline: none;
-            border-color: #764ba2;
-            box-shadow: 0 0 0 3px rgba(118, 75, 162, 0.1);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
         }
 
         .btn {
             padding: 15px 25px;
             border: none;
-            border-radius: 10px;
+            border-radius: 15px;
             font-size: 1em;
-            font-weight: bold;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
             font-family: inherit;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            justify-content: center;
         }
 
-        .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-
-        .btn-primary:hover {
+        .btn:hover:not(:disabled) {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
         }
 
-        .btn-secondary {
-            background: #28a745;
-            color: white;
-        }
-
-        .btn-secondary:hover {
-            background: #218838;
-            transform: translateY(-2px);
-        }
-
-        .btn-danger {
-            background: #dc3545;
-            color: white;
-        }
-
-        .btn-danger:hover {
-            background: #c82333;
+        .btn:active:not(:disabled) {
+            transform: translateY(0);
         }
 
         .btn:disabled {
             opacity: 0.5;
             cursor: not-allowed;
-            transform: none !important;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #6b7280, #4b5563);
+            color: white;
         }
 
         .voice-controls {
-            display: flex;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
             gap: 10px;
-            justify-content: center;
         }
 
-        .features-section {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
+        .sidebar {
+            background: #f9fafb;
+            padding: 30px;
+            border-left: 3px solid #e5e7eb;
+            overflow-y: auto;
         }
 
-        .feature-card {
-            background: #f8f9fa;
-            padding: 20px;
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+
+        .feature-section {
+            background: white;
+            padding: 25px;
             border-radius: 15px;
-            border-left: 5px solid #667eea;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
 
-        .feature-card h3 {
-            color: #667eea;
-            margin-bottom: 15px;
+        .feature-section h3 {
+            color: var(--primary);
+            margin-bottom: 20px;
             font-size: 1.3em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        .topic-buttons {
+        .difficulty-selector {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .difficulty-btn {
+            padding: 12px;
+            border: 2px solid #e5e7eb;
+            background: white;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .difficulty-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .difficulty-btn.easy {
+            border-color: var(--success);
+            color: var(--success);
+        }
+
+        .difficulty-btn.easy.active {
+            background: var(--success);
+            color: white;
+        }
+
+        .difficulty-btn.medium {
+            border-color: var(--warning);
+            color: var(--warning);
+        }
+
+        .difficulty-btn.medium.active {
+            background: var(--warning);
+            color: white;
+        }
+
+        .difficulty-btn.hard {
+            border-color: var(--danger);
+            color: var(--danger);
+        }
+
+        .difficulty-btn.hard.active {
+            background: var(--danger);
+            color: white;
+        }
+
+        .topic-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 10px;
-            margin-top: 15px;
+            margin-bottom: 15px;
         }
 
         .topic-btn {
             padding: 12px;
             background: white;
-            border: 2px solid #667eea;
+            border: 2px solid var(--primary);
             border-radius: 10px;
-            color: #667eea;
+            color: var(--primary);
             cursor: pointer;
             transition: all 0.3s ease;
             font-weight: 600;
-            font-family: inherit;
+            text-align: center;
         }
 
         .topic-btn:hover {
-            background: #667eea;
+            background: var(--primary);
             color: white;
             transform: scale(1.05);
         }
 
-        .custom-topic {
-            margin-top: 15px;
+        .custom-topic-input {
             display: flex;
             gap: 10px;
+            margin-top: 15px;
         }
 
-        .custom-topic input {
+        .custom-topic-input input {
             flex: 1;
             padding: 12px;
-            border: 2px solid #667eea;
+            border: 2px solid #e5e7eb;
             border-radius: 10px;
             font-family: inherit;
         }
 
-        .status-indicator {
-            text-align: center;
-            padding: 10px;
-            border-radius: 10px;
-            margin-bottom: 15px;
-            font-weight: bold;
+        .custom-topic-input input:focus {
+            outline: none;
+            border-color: var(--primary);
         }
 
-        .status-indicator.listening {
-            background: #28a745;
-            color: white;
-            animation: pulse 1.5s infinite;
-        }
-
-        .status-indicator.speaking {
-            background: #007bff;
-            color: white;
-            animation: pulse 1.5s infinite;
-        }
-
-        .status-indicator.processing {
-            background: #ffc107;
-            color: #000;
-        }
-
-        @keyframes pulse {
-            0%, 100% {
-                opacity: 1;
-            }
-            50% {
-                opacity: 0.7;
-            }
-        }
-
-        .language-switch {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .lang-btn {
-            padding: 10px 20px;
-            border: 2px solid #667eea;
-            background: white;
-            color: #667eea;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: all 0.3s ease;
-            font-family: inherit;
-        }
-
-        .lang-btn.active {
-            background: #667eea;
-            color: white;
-        }
-
-        .loading {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #667eea;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-left: 10px;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .instructions {
-            background: #fff3cd;
-            padding: 15px;
-            border-radius: 10px;
-            border-left: 5px solid #ffc107;
-            margin-bottom: 20px;
-        }
-
-        .instructions h4 {
-            color: #856404;
-            margin-bottom: 10px;
-        }
-
-        .instructions ul {
-            margin-left: 20px;
-            color: #856404;
-        }
-
-        .instructions li {
-            margin-bottom: 5px;
-        }
-
-        .example-phrases {
-            background: #d1ecf1;
-            padding: 15px;
-            border-radius: 10px;
-            border-left: 5px solid #0c5460;
-        }
-
-        .example-phrases h4 {
-            color: #0c5460;
-            margin-bottom: 10px;
-        }
-
-        .example-phrases p {
-            color: #0c5460;
-            margin: 5px 0;
-            padding: 5px 10px;
-            background: white;
-            border-radius: 5px;
-        }
-
-        .stats {
+        .stats-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(2, 1fr);
             gap: 15px;
-            margin-top: 20px;
         }
 
         .stat-card {
-            background: white;
-            padding: 15px;
-            border-radius: 10px;
+            background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+            padding: 20px;
+            border-radius: 12px;
             text-align: center;
-            border: 2px solid #e9ecef;
         }
 
         .stat-card h4 {
-            color: #667eea;
-            font-size: 2em;
+            font-size: 2.5em;
+            color: var(--primary);
             margin-bottom: 5px;
+            font-weight: 700;
         }
 
         .stat-card p {
-            color: #6c757d;
+            color: #6b7280;
             font-size: 0.9em;
+            font-weight: 500;
+        }
+
+        .quick-phrases {
+            background: #dbeafe;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .quick-phrases h4 {
+            color: #1e40af;
+            margin-bottom: 12px;
+            font-size: 1em;
+        }
+
+        .phrase-item {
+            background: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-left: 3px solid #3b82f6;
+        }
+
+        .phrase-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
+        }
+
+        .phrase-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .instructions {
+            background: #fef3c7;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #f59e0b;
+        }
+
+        .instructions h4 {
+            color: #92400e;
+            margin-bottom: 10px;
+            font-size: 1em;
+        }
+
+        .instructions ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .instructions li {
+            color: #92400e;
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .instructions li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #f59e0b;
+            font-weight: bold;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .welcome-message {
+            background: linear-gradient(135deg, #e0e7ff, #ddd6fe);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            border-left: 5px solid var(--primary);
+        }
+
+        .welcome-message h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .welcome-message p {
+            color: #4b5563;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .topic-grid,
+            .difficulty-selector {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .voice-controls {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>🎓 AI English Learning Assistant</h1>
-            <p>រៀនភាសាអង់គ្លេសជាមួយ AI ដែលអាចនិយាយបាន</p>
+            <div class="header-content">
+                <h1>🎓 AI English Learning Pro</h1>
+                <p>រៀនភាសាអង់គ្លេសជាមួយ AI ដែលអាចនិយាយបាន - អនុវត្តដោយមិនចាំបាច់ Internet!</p>
+            </div>
         </div>
 
-        <div class="main-content">
-            <!-- ផ្នែកជជែក -->
-            <div class="chat-section">
-                <div class="language-switch">
-                    <button class="lang-btn active" onclick="switchLanguage('km')" id="btnKm">🇰🇭 ខ្មែរ</button>
-                    <button class="lang-btn" onclick="switchLanguage('en')" id="btnEn">🇬🇧 English</button>
+        <div class="main-layout">
+            <!-- Chat Area -->
+            <div class="chat-area">
+                <div class="chat-header">
+                    <div class="language-switch">
+                        <button class="lang-btn active" onclick="switchLanguage('km')" id="btnKm">
+                            🇰🇭 ភាសាខ្មែរ
+                        </button>
+                        <button class="lang-btn" onclick="switchLanguage('en')" id="btnEn">
+                            🇬🇧 English
+                        </button>
+                    </div>
+
+                    <div id="statusBar" class="status-bar"></div>
                 </div>
 
-                <div id="statusIndicator" class="status-indicator" style="display: none;"></div>
-
                 <div class="chat-messages" id="chatMessages">
-                    <div class="message ai">
-                        <div class="message-header">🤖 AI Teacher</div>
-                        <div class="message-content">
-                            <strong>ជំរាបសួរ!</strong> I'm your AI English teacher. I can help you learn English through conversation.<br><br>
-                            <strong>អ្នកអាចធ្វើអ្វីបាន៖</strong><br>
-                            • ជជែកជាមួយខ្ញុំដើម្បីអនុវត្តភាសាអង់គ្លេស<br>
-                            • ស្នើសុំឱ្យខ្ញុំបង្កើតអត្ថបទខ្លីៗតាមប្រធានបទ<br>
-                            • និយាយជាមួយខ្ញុំដោយប្រើសំឡេង<br>
-                            • សួរសំណួរណាមួយអំពីភាសាអង់គ្លេស<br><br>
-                            តោះចាប់ផ្តើម! How can I help you today?
-                        </div>
+                    <div class="welcome-message">
+                        <h3>👋 សូមស្វាគមន៍! Welcome!</h3>
+                        <p><strong>ខ្ញុំជា AI Teacher របស់អ្នក!</strong> I can help you learn English in many ways:</p>
+                        <p>✅ <strong>និយាយជាមួយខ្ញុំ</strong> - Practice speaking and conversation</p>
+                        <p>✅ <strong>បង្កើតអត្ថបទ</strong> - Generate stories with 3 difficulty levels</p>
+                        <p>✅ <strong>សួរសំណួរ</strong> - Ask about grammar, vocabulary, anything!</p>
+                        <p>✅ <strong>ទទួលមតិកែលម្អ</strong> - Get corrections and feedback</p>
+                        <p style="margin-top: 15px; font-weight: 600;">តោះចាប់ផ្តើម! Let's start learning! 🚀</p>
                     </div>
                 </div>
 
-                <div class="input-area">
-                    <input type="text" id="userInput" placeholder="វាយសារនៅទីនេះ... (Type your message here...)" onkeypress="handleKeyPress(event)">
-                    <button class="btn btn-primary" onclick="sendMessage()">📤 ផ្ញើ</button>
-                </div>
+                <div class="input-section">
+                    <div class="input-wrapper">
+                        <textarea 
+                            id="userInput" 
+                            placeholder="វាយសារនៅទីនេះ... Type your message here..."
+                            onkeydown="handleKeyPress(event)"
+                        ></textarea>
+                        <button class="btn btn-primary" onclick="sendMessage()" id="btnSend">
+                            📤 ផ្ញើ
+                        </button>
+                    </div>
 
-                <div class="voice-controls">
-                    <button class="btn btn-secondary" id="btnListen" onclick="startListening()">🎤 និយាយ (Speak)</button>
-                    <button class="btn btn-danger" id="btnStop" onclick="stopListening()" style="display: none;">⏹️ បញ្ឈប់</button>
+                    <div class="voice-controls">
+                        <button class="btn btn-success" id="btnVoice" onclick="toggleVoiceInput()">
+                            🎤 និយាយ (Speak)
+                        </button>
+                        <button class="btn btn-secondary" onclick="clearChat()">
+                            🗑️ លុបសារ (Clear)
+                        </button>
+                    </div>
                 </div>
             </div>
 
-            <!-- ផ្នែកមុខងារ -->
-            <div class="features-section">
-                <div class="feature-card">
-                    <h3>📝 បង្កើតអត្ថបទតាមប្រធានបទ</h3>
-                    <p>ជ្រើសរើសប្រធានបទ ឬបញ្ចូលប្រធានបទផ្ទាល់ខ្លួន</p>
-                    <div class="topic-buttons">
-                        <button class="topic-btn" onclick="generateStory('រឿងព្រេងនិទាន')">🧚 រឿងព្រេងនិទាន<br>Fairy Tales</button>
-                        <button class="topic-btn" onclick="generateStory('ការធ្វើដំណើរ')">✈️ ការធ្វើដំណើរ<br>Travel</button>
-                        <button class="topic-btn" onclick="generateStory('បច្ចេកវិទ្យា')">💻 បច្ចេកវិទ្យា<br>Technology</button>
-                        <button class="topic-btn" onclick="generateStory('អាហារ')">🍜 អាហារ<br>Food</button>
-                        <button class="topic-btn" onclick="generateStory('កីឡា')">⚽ កីឡា<br>Sports</button>
-                        <button class="topic-btn" onclick="generateStory('តន្ត្រី')">🎵 តន្ត្រី<br>Music</button>
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <!-- Story Generator -->
+                <div class="feature-section">
+                    <h3>📝 បង្កើតអត្ថបទ Story Generator</h3>
+                    
+                    <h4 style="font-size: 0.95em; margin-bottom: 10px; color: #6b7280;">កម្រិតលំបាក Difficulty:</h4>
+                    <div class="difficulty-selector">
+                        <button class="difficulty-btn easy active" onclick="setDifficulty('easy')" id="diffEasy">
+                            😊 ងាយ<br>Easy
+                        </button>
+                        <button class="difficulty-btn medium" onclick="setDifficulty('medium')" id="diffMedium">
+                            🤔 មធ្យម<br>Medium
+                        </button>
+                        <button class="difficulty-btn hard" onclick="setDifficulty('hard')" id="diffHard">
+                            🔥 លំបាក<br>Hard
+                        </button>
                     </div>
-                    <div class="custom-topic">
-                        <input type="text" id="customTopic" placeholder="បញ្ចូលប្រធានបទផ្ទាល់ខ្លួន...">
-                        <button class="btn btn-primary" onclick="generateCustomStory()">✨ បង្កើត</button>
+
+                    <h4 style="font-size: 0.95em; margin-bottom: 10px; margin-top: 15px; color: #6b7280;">ប្រធានបទ Topics:</h4>
+                    <div class="topic-grid">
+                        <button class="topic-btn" onclick="generateStory('Adventure')">
+                            🗺️ ការផ្សងព្រេង<br>Adventure
+                        </button>
+                        <button class="topic-btn" onclick="generateStory('Friendship')">
+                            👥 មិត្តភាព<br>Friendship
+                        </button>
+                        <button class="topic-btn" onclick="generateStory('Technology')">
+                            💻 បច្ចេកវិទ្យា<br>Technology
+                        </button>
+                        <button class="topic-btn" onclick="generateStory('Nature')">
+                            🌳 ធម្មជាតិ<br>Nature
+                        </button>
+                        <button class="topic-btn" onclick="generateStory('Daily Life')">
+                            🏠 ជីវិតប្រចាំថ្ងៃ<br>Daily Life
+                        </button>
+                        <button class="topic-btn" onclick="generateStory('Food')">
+                            🍜 អាហារ<br>Food
+                        </button>
+                    </div>
+
+                    <div class="custom-topic-input">
+                        <input 
+                            type="text" 
+                            id="customTopic" 
+                            placeholder="ប្រធានបទផ្ទាល់ខ្លួន..."
+                            onkeypress="if(event.key==='Enter') generateCustomStory()"
+                        >
+                        <button class="btn btn-warning" onclick="generateCustomStory()">
+                            ✨
+                        </button>
                     </div>
                 </div>
 
-                <div class="feature-card">
-                    <h3>💡 គន្លឹះរៀនភាសា</h3>
-                    <div class="instructions">
-                        <h4>របៀបប្រើប្រាស់៖</h4>
-                        <ul>
-                            <li><strong>វាយសារ</strong> ឬ <strong>និយាយ</strong> ជាភាសាអង់គ្លេស ឬខ្មែរ</li>
-                            <li>AI នឹងឆ្លើយតបជាភាសាអង់គ្លេស</li>
-                            <li>ស្នើសុំឱ្យ AI បង្កើតអត្ថបទតាមប្រធានបទ</li>
-                            <li>សួរសំណួរអំពីវេយ្យាករណ៍ ឬពាក្យ</li>
-                        </ul>
-                    </div>
-
-                    <div class="example-phrases">
-                        <h4>ឧទាហរណ៍ប្រយោគ៖</h4>
-                        <p>✅ "Tell me a story about a brave knight"</p>
-                        <p>✅ "How do I use past tense?"</p>
-                        <p>✅ "Create a dialogue at a restaurant"</p>
-                        <p>✅ "ប្រាប់ខ្ញុំអំពីសត្វមួយជាភាសាអង់គ្លេស"</p>
+                <!-- Quick Phrases -->
+                <div class="feature-section">
+                    <h3>💬 ឃ្លាលឿន Quick Phrases</h3>
+                    <div class="quick-phrases">
+                        <h4>ចុចដើម្បីប្រើ Click to use:</h4>
+                        <div class="phrase-item" onclick="useQuickPhrase('Tell me a story about a brave hero')">
+                            "Tell me a story about a brave hero"
+                        </div>
+                        <div class="phrase-item" onclick="useQuickPhrase('How do I use present perfect tense?')">
+                            "How do I use present perfect tense?"
+                        </div>
+                        <div class="phrase-item" onclick="useQuickPhrase('Correct my English: I go to school yesterday')">
+                            "Correct my English: ..."
+                        </div>
+                        <div class="phrase-item" onclick="useQuickPhrase('Teach me 5 new vocabulary words')">
+                            "Teach me 5 new vocabulary words"
+                        </div>
                     </div>
                 </div>
 
-                <div class="feature-card">
-                    <h3>📊 ស្ថិតិរបស់អ្នក</h3>
-                    <div class="stats">
+                <!-- Statistics -->
+                <div class="feature-section">
+                    <h3>📊 ស្ថិតិ Statistics</h3>
+                    <div class="stats-grid">
                         <div class="stat-card">
-                            <h4 id="messageCount">0</h4>
+                            <h4 id="statMessages">0</h4>
                             <p>សារ<br>Messages</p>
                         </div>
                         <div class="stat-card">
-                            <h4 id="storyCount">0</h4>
+                            <h4 id="statStories">0</h4>
                             <p>អត្ថបទ<br>Stories</p>
                         </div>
                         <div class="stat-card">
-                            <h4 id="voiceCount">0</h4>
+                            <h4 id="statVoice">0</h4>
                             <p>សំឡេង<br>Voice</p>
                         </div>
+                        <div class="stat-card">
+                            <h4 id="statWords">0</h4>
+                            <p>ពាក្យ<br>Words</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Instructions -->
+                <div class="feature-section">
+                    <div class="instructions">
+                        <h4>💡 គន្លឹះប្រើប្រាស់ Tips:</h4>
+                        <ul>
+                            <li>និយាយ ឬវាយសារជាអង់គ្លេស ឬខ្មែរ</li>
+                            <li>ជ្រើសកម្រិតលំបាកមុនបង្កើតរឿង</li>
+                            <li>ចុចលើឃ្លាលឿនដើម្បីប្រើ</li>
+                            <li>សួរអំពីវេយ្យាករណ៍ណាមួយ</li>
+                            <li>អនុវត្តជារៀងរាល់ថ្ងៃ!</li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -498,18 +823,241 @@
     </div>
 
     <script>
-        // ការកំណត់
+        // ========================================
+        // CONFIGURATION & GLOBAL VARIABLES
+        // ========================================
+        
         let currentLanguage = 'km';
+        let currentDifficulty = 'easy';
+        let isVoiceActive = false;
         let recognition = null;
         let synthesis = window.speechSynthesis;
-        let isListening = false;
+        
         let stats = {
             messages: 0,
             stories: 0,
-            voice: 0
+            voice: 0,
+            words: 0
         };
 
-        // ចាប់ផ្តើម Speech Recognition
+        // ========================================
+        // AI RESPONSE ENGINE (Built-in, No API needed)
+        // ========================================
+        
+        const vocabularyDatabase = {
+            easy: {
+                adventure: ['journey', 'travel', 'explore', 'discover', 'walk'],
+                friendship: ['friend', 'kind', 'help', 'share', 'together'],
+                technology: ['computer', 'phone', 'internet', 'website', 'email'],
+                nature: ['tree', 'flower', 'river', 'mountain', 'animal'],
+                daily: ['breakfast', 'school', 'work', 'home', 'family'],
+                food: ['eat', 'delicious', 'cook', 'hungry', 'drink']
+            },
+            medium: {
+                adventure: ['expedition', 'venture', 'quest', 'navigate', 'embark'],
+                friendship: ['companion', 'loyalty', 'support', 'bond', 'cherish'],
+                technology: ['innovation', 'digital', 'software', 'network', 'application'],
+                nature: ['ecosystem', 'wilderness', 'biodiversity', 'landscape', 'habitat'],
+                daily: ['routine', 'schedule', 'organize', 'accomplish', 'responsibility'],
+                food: ['cuisine', 'recipe', 'ingredients', 'nutritious', 'flavor']
+            },
+            hard: {
+                adventure: ['odyssey', 'perilous', 'treacherous', 'uncharted', 'formidable'],
+                friendship: ['camaraderie', 'allegiance', 'solidarity', 'unwavering', 'profound'],
+                technology: ['artificial intelligence', 'cybersecurity', 'algorithm', 'integrated', 'sophisticated'],
+                nature: ['conservation', 'sustainable', 'pristine', 'indigenous', 'ecological'],
+                daily: ['mundane', 'meticulous', 'prioritize', 'efficient', 'systematic'],
+                food: ['culinary', 'gastronomic', 'exquisite', 'delicacy', 'palatable']
+            }
+        };
+
+        const storyTemplates = {
+            easy: {
+                opening: [
+                    "Once upon a time, there was",
+                    "One sunny day,",
+                    "In a small village,",
+                    "Long ago,"
+                ],
+                middle: [
+                    "Every day, they would",
+                    "One day, something interesting happened.",
+                    "They decided to",
+                    "Together, they"
+                ],
+                ending: [
+                    "And they lived happily ever after.",
+                    "From that day on, everything was better.",
+                    "They learned an important lesson.",
+                    "And that is the end of our story."
+                ]
+            },
+            medium: {
+                opening: [
+                    "In the heart of",
+                    "During the summer of",
+                    "It was an ordinary day until",
+                    "Nobody could have predicted that"
+                ],
+                middle: [
+                    "As the story unfolds,",
+                    "Meanwhile, an unexpected challenge arose.",
+                    "They encountered numerous obstacles, but",
+                    "Through determination and courage,"
+                ],
+                ending: [
+                    "In the end, they discovered that",
+                    "This experience taught them that",
+                    "Looking back, they realized",
+                    "Their journey concluded with"
+                ]
+            },
+            hard: {
+                opening: [
+                    "Amidst the tumultuous events of",
+                    "In an era characterized by",
+                    "Against the backdrop of",
+                    "The narrative commences with"
+                ],
+                middle: [
+                    "Subsequently, a series of unprecedented events",
+                    "The complexity of the situation intensified when",
+                    "Confronted with multifaceted challenges,",
+                    "Through strategic planning and unwavering resolve,"
+                ],
+                ending: [
+                    "Ultimately, the profound implications of",
+                    "This transformative experience illuminated",
+                    "In retrospect, the significance of",
+                    "The culmination of these events demonstrated"
+                ]
+            }
+        };
+
+        const grammarRules = {
+            "present simple": "Use for habits, facts, and general truths. Example: 'I eat breakfast every day.' Form: Subject + base verb (add 's' for he/she/it)",
+            "present continuous": "Use for actions happening now. Example: 'I am eating breakfast.' Form: Subject + am/is/are + verb+ing",
+            "past simple": "Use for completed actions in the past. Example: 'I ate breakfast yesterday.' Form: Subject + verb+ed (or irregular form)",
+            "past continuous": "Use for ongoing actions in the past. Example: 'I was eating when you called.' Form: Subject + was/were + verb+ing",
+            "present perfect": "Use for actions that happened at an unspecified time or have relevance now. Example: 'I have eaten breakfast.' Form: Subject + have/has + past participle",
+            "future simple": "Use for future predictions or decisions. Example: 'I will eat breakfast tomorrow.' Form: Subject + will + base verb",
+            "modal verbs": "Can, could, may, might, must, shall, should, will, would. Express ability, possibility, permission, obligation, etc."
+        };
+
+        // ========================================
+        // BUILT-IN AI RESPONSE GENERATOR
+        // ========================================
+        
+        function generateAIResponse(userMessage) {
+            const message = userMessage.toLowerCase();
+            
+            // Check for story generation request
+            if (message.includes('story') || message.includes('រឿង') || message.includes('tale')) {
+                return generateStoryContent('general');
+            }
+            
+            // Check for grammar questions
+            for (let tense in grammarRules) {
+                if (message.includes(tense)) {
+                    return `Great question about ${tense}!\n\n${grammarRules[tense]}\n\nWould you like me to give you more examples or practice exercises?`;
+                }
+            }
+            
+            // Check for vocabulary request
+            if (message.includes('vocabulary') || message.includes('word') || message.includes('ពាក្យ')) {
+                return generateVocabularyLesson();
+            }
+            
+            // Check for correction request
+            if (message.includes('correct') || message.includes('កែ')) {
+                return "I'd be happy to help correct your English! Please write a sentence and I'll help you improve it. For example:\n\n❌ 'I go to school yesterday'\n✅ 'I went to school yesterday'\n\nThe past tense of 'go' is 'went', not 'go'.";
+            }
+            
+            // Check for practice/conversation
+            if (message.includes('practice') || message.includes('talk') || message.includes('conversation')) {
+                return generateConversationPrompt();
+            }
+            
+            // Check for greeting
+            if (message.includes('hello') || message.includes('hi') || message.includes('ជម្រាបសួរ') || message.includes('សួស្តី')) {
+                return "Hello! 👋 សួស្តី! I'm so happy to help you learn English today! What would you like to practice?\n\n• 📖 Tell stories\n• 📝 Learn grammar\n• 💬 Practice conversation\n• 📚 Study vocabulary\n\nJust let me know!";
+            }
+            
+            // Check for thanks
+            if (message.includes('thank') || message.includes('អរគុណ')) {
+                return "You're very welcome! 😊 ជម្រាបលា! Keep practicing and you'll become fluent in English! Is there anything else you'd like to learn today?";
+            }
+            
+            // Default helpful response
+            return `I understand you said: "${userMessage}"\n\nI can help you with:\n\n✅ **Grammar** - Ask me about tenses, sentence structure, etc.\n✅ **Vocabulary** - Learn new words and phrases\n✅ **Stories** - Generate practice stories (easy, medium, hard)\n✅ **Conversation** - Practice speaking and writing\n✅ **Corrections** - Fix your English sentences\n\nWhat would you like to learn? សំណួរអ្វីដែលអ្នកចង់ដឹង?`;
+        }
+
+        function generateStoryContent(topic) {
+            const templates = storyTemplates[currentDifficulty];
+            const vocabCategory = topic.toLowerCase().includes('adventure') ? 'adventure' :
+                                 topic.toLowerCase().includes('friend') ? 'friendship' :
+                                 topic.toLowerCase().includes('tech') ? 'technology' :
+                                 topic.toLowerCase().includes('nature') ? 'nature' :
+                                 topic.toLowerCase().includes('food') ? 'food' : 'daily';
+            
+            const vocab = vocabularyDatabase[currentDifficulty][vocabCategory] || vocabularyDatabase[currentDifficulty]['daily'];
+            
+            const opening = templates.opening[Math.floor(Math.random() * templates.opening.length)];
+            const middle = templates.middle[Math.floor(Math.random() * templates.middle.length)];
+            const ending = templates.ending[Math.floor(Math.random() * templates.ending.length)];
+            
+            let story = '';
+            
+            if (currentDifficulty === 'easy') {
+                story = `${opening} a young person who loved ${topic}. They enjoyed spending time ${vocab[0]}ing and ${vocab[1]}ing every day.\n\n${middle} They met new friends and learned about ${vocab[2]}. Together, they explored ${vocab[3]} places and had many ${vocab[4]} adventures.\n\n${ending} The moral of this story is that ${topic} brings joy to our lives!`;
+            } else if (currentDifficulty === 'medium') {
+                story = `${opening} ${topic}, there lived an ambitious individual who aspired to achieve great things. Their journey involved ${vocab[0]}, ${vocab[1]}, and countless hours of ${vocab[2]}.\n\n${middle} they faced significant challenges that tested their ${vocab[3]} and ${vocab[4]}. Through perseverance and dedication, they overcame each obstacle, learning valuable lessons along the way.\n\n${ending} ${topic} is not just about the destination, but about the growth we experience during the journey. Their story inspires us to pursue our dreams with courage and determination.`;
+            } else {
+                story = `${opening} ${topic}, an extraordinary protagonist embarked upon an ${vocab[0]} that would fundamentally transform their perspective. The complexity of their ${vocab[1]} situation demanded ${vocab[2]} and ${vocab[3]} approaches.\n\n${middle} necessitated unprecedented levels of ${vocab[4]} and strategic thinking. The multifaceted challenges they encountered required not only technical proficiency but also profound emotional intelligence and adaptability.\n\n${ending} this experience epitomizes the quintessential human capacity for growth through adversity. The narrative of ${topic} serves as a testament to resilience, illustrating how profound transformation emerges from confronting and surmounting formidable obstacles.`;
+            }
+            
+            return `📚 **Story about ${topic}** (${currentDifficulty.toUpperCase()} level)\n\n${story}\n\n---\n\n💡 **New vocabulary used:**\n${vocab.slice(0, 5).map((word, i) => `${i+1}. ${word}`).join('\n')}\n\nWould you like another story or have questions about any words?`;
+        }
+
+        function generateVocabularyLesson() {
+            const topics = ['adventure', 'friendship', 'technology', 'nature', 'daily', 'food'];
+            const randomTopic = topics[Math.floor(Math.random() * topics.length)];
+            const words = vocabularyDatabase[currentDifficulty][randomTopic];
+            
+            let lesson = `📚 **Vocabulary Lesson** - ${randomTopic.toUpperCase()} (${currentDifficulty} level)\n\n`;
+            
+            words.forEach((word, index) => {
+                lesson += `${index + 1}. **${word}**\n`;
+                if (currentDifficulty === 'easy') {
+                    lesson += `   Example: "I ${word} every day."\n\n`;
+                } else if (currentDifficulty === 'medium') {
+                    lesson += `   Example: "The ${word} was impressive."\n\n`;
+                } else {
+                    lesson += `   Example: "One must consider the ${word} implications."\n\n`;
+                }
+            });
+            
+            lesson += `\n💡 Practice using these words in your own sentences!`;
+            return lesson;
+        }
+
+        function generateConversationPrompt() {
+            const scenarios = [
+                "🏪 **At a Store**\nYou: 'Hello, how much is this?'\nShopkeeper: 'It's $10.'\nYou: [Your turn to respond]",
+                "🍽️ **At a Restaurant**\nWaiter: 'What would you like to order?'\nYou: [Your turn to order]",
+                "✈️ **At the Airport**\nOfficer: 'May I see your passport?'\nYou: [Your turn to respond]",
+                "🏥 **At the Doctor**\nDoctor: 'How are you feeling today?'\nYou: [Your turn to describe]",
+                "🎓 **At School**\nTeacher: 'Did you complete your homework?'\nYou: [Your turn to answer]"
+            ];
+            
+            const scenario = scenarios[Math.floor(Math.random() * scenarios.length)];
+            return `Let's practice a conversation!\n\n${scenario}\n\nType your response and I'll continue the conversation with you! 😊`;
+        }
+
+        // ========================================
+        // SPEECH RECOGNITION & SYNTHESIS
+        // ========================================
+        
         function initSpeechRecognition() {
             if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
                 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -519,35 +1067,40 @@
                 recognition.lang = 'en-US';
 
                 recognition.onstart = () => {
-                    isListening = true;
-                    showStatus('listening', 'កំពុងស្តាប់... Listening...');
-                    document.getElementById('btnListen').style.display = 'none';
-                    document.getElementById('btnStop').style.display = 'inline-block';
+                    isVoiceActive = true;
+                    showStatus('listening', '🎤 កំពុងស្តាប់... Listening...');
+                    document.getElementById('btnVoice').innerHTML = '⏹️ បញ្ឈប់ Stop';
+                    document.getElementById('btnVoice').classList.remove('btn-success');
+                    document.getElementById('btnVoice').classList.add('btn-danger');
                 };
 
                 recognition.onresult = (event) => {
                     const transcript = event.results[0][0].transcript;
                     document.getElementById('userInput').value = transcript;
-                    sendMessage();
+                    setTimeout(() => sendMessage(), 500);
                 };
 
                 recognition.onerror = (event) => {
                     console.error('Speech recognition error:', event.error);
-                    showStatus('error', 'មានបញ្ហា! Error: ' + event.error);
-                    resetVoiceButtons();
+                    showStatus('error', '❌ មានបញ្ហា! Error: ' + event.error);
+                    resetVoiceButton();
                 };
 
                 recognition.onend = () => {
-                    resetVoiceButtons();
+                    resetVoiceButton();
                 };
-            } else {
-                console.log('Speech recognition not supported');
             }
         }
 
-        // ចាប់ផ្តើមស្តាប់
-        function startListening() {
-            if (recognition) {
+        function toggleVoiceInput() {
+            if (!recognition) {
+                alert('Speech recognition is not supported in your browser.\nសូមប្រើ Google Chrome ឬ Microsoft Edge.');
+                return;
+            }
+
+            if (isVoiceActive) {
+                recognition.stop();
+            } else {
                 try {
                     recognition.start();
                     stats.voice++;
@@ -555,208 +1108,204 @@
                 } catch (e) {
                     console.error('Error starting recognition:', e);
                 }
-            } else {
-                alert('Speech recognition is not supported in your browser. Please use Chrome or Edge.');
             }
         }
 
-        // បញ្ឈប់ស្តាប់
-        function stopListening() {
-            if (recognition && isListening) {
-                recognition.stop();
-            }
-        }
-
-        // Reset voice buttons
-        function resetVoiceButtons() {
-            isListening = false;
-            document.getElementById('btnListen').style.display = 'inline-block';
-            document.getElementById('btnStop').style.display = 'none';
+        function resetVoiceButton() {
+            isVoiceActive = false;
+            document.getElementById('btnVoice').innerHTML = '🎤 និយាយ (Speak)';
+            document.getElementById('btnVoice').classList.remove('btn-danger');
+            document.getElementById('btnVoice').classList.add('btn-success');
             hideStatus();
         }
 
-        // Text-to-Speech
         function speak(text) {
-            if (synthesis) {
-                // Cancel any ongoing speech
-                synthesis.cancel();
+            if (!synthesis) return;
+            
+            synthesis.cancel();
+            
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'en-US';
+            utterance.rate = 0.85;
+            utterance.pitch = 1;
+            utterance.volume = 1;
 
-                const utterance = new SpeechSynthesisUtterance(text);
-                utterance.lang = 'en-US';
-                utterance.rate = 0.9;
-                utterance.pitch = 1;
+            utterance.onstart = () => {
+                showStatus('speaking', '🔊 កំពុងនិយាយ... Speaking...');
+            };
 
-                utterance.onstart = () => {
-                    showStatus('speaking', 'កំពុងនិយាយ... Speaking...');
-                };
+            utterance.onend = () => {
+                hideStatus();
+            };
 
-                utterance.onend = () => {
-                    hideStatus();
-                };
+            utterance.onerror = (event) => {
+                console.error('Speech error:', event);
+                hideStatus();
+            };
 
-                utterance.onerror = (event) => {
-                    console.error('Speech synthesis error:', event);
-                    hideStatus();
-                };
-
-                synthesis.speak(utterance);
-            }
+            synthesis.speak(utterance);
         }
 
-        // បញ្ជូនសារ
+        // ========================================
+        // MESSAGE HANDLING
+        // ========================================
+        
         async function sendMessage() {
             const input = document.getElementById('userInput');
             const message = input.value.trim();
 
             if (!message) return;
 
-            // បង្ហាញសាររបស់អ្នកប្រើប្រាស់
+            // Add user message
             addMessage(message, 'user');
             input.value = '';
 
-            // បង្ហាញស្ថានភាព processing
-            showStatus('processing', 'កំពុងដំណើរការ... Processing...');
+            // Show processing status
+            showStatus('processing', '⚙️ កំពុងដំណើរការ... Processing...');
 
-            // ហៅ Claude API
-            try {
-                const response = await fetch('https://api.anthropic.com/v1/messages', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        model: 'claude-sonnet-4-20250514',
-                        max_tokens: 1500,
-                        messages: [{
-                            role: 'user',
-                            content: `You are an expert English teacher helping students learn English. The student may speak in Khmer or English. Always respond in clear, simple English that's appropriate for language learners. Be encouraging and helpful.
+            // Simulate thinking delay for more natural feel
+            await new Promise(resolve => setTimeout(resolve, 800));
 
-If they ask you to create a story or content about a topic, write an interesting short passage (2-3 paragraphs) in English about that topic, using clear language and interesting vocabulary.
+            // Generate AI response
+            const aiResponse = generateAIResponse(message);
 
-Student's message: ${message}`
-                        }]
-                    })
-                });
+            hideStatus();
+            addMessage(aiResponse, 'ai');
+            
+            // Speak the response
+            speak(aiResponse);
 
-                const data = await response.json();
-                const aiResponse = data.content[0].text;
-
-                hideStatus();
-                addMessage(aiResponse, 'ai');
-                speak(aiResponse);
-
-                stats.messages++;
-                updateStats();
-
-            } catch (error) {
-                console.error('Error:', error);
-                hideStatus();
-                addMessage('Sorry, I encountered an error. Please try again. សូមអភ័យទោស មានបញ្ហាបច្ចេកទេស។', 'ai');
-            }
+            // Update stats
+            stats.messages++;
+            stats.words += message.split(' ').length;
+            updateStats();
         }
 
-        // បន្ថែមសារទៅ chat
         function addMessage(text, type) {
             const messagesDiv = document.getElementById('chatMessages');
             const messageDiv = document.createElement('div');
             messageDiv.className = `message ${type}`;
 
+            const bubble = document.createElement('div');
+            bubble.className = 'message-bubble';
+
             const header = document.createElement('div');
             header.className = 'message-header';
-            header.textContent = type === 'user' ? '👤 អ្នក (You)' : '🤖 AI Teacher';
+            header.textContent = type === 'user' ? '👤 អ្នក You' : '🤖 AI Teacher';
 
             const content = document.createElement('div');
             content.className = 'message-content';
             content.textContent = text;
 
-            messageDiv.appendChild(header);
-            messageDiv.appendChild(content);
+            const time = document.createElement('div');
+            time.className = 'message-time';
+            time.textContent = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+
+            bubble.appendChild(header);
+            bubble.appendChild(content);
+            bubble.appendChild(time);
+            messageDiv.appendChild(bubble);
             messagesDiv.appendChild(messageDiv);
 
-            // Scroll to bottom
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
         }
 
-        // បង្កើតរឿងតាមប្រធានបទ
-        async function generateStory(topic) {
-            showStatus('processing', 'កំពុងបង្កើតអត្ថបទ... Creating story...');
-
-            const prompt = `Create an interesting short story or passage (2-3 paragraphs) in English about "${topic}". Use clear, engaging language that's appropriate for English learners. Include some descriptive vocabulary but keep sentences relatively simple.`;
-
-            try {
-                const response = await fetch('https://api.anthropic.com/v1/messages', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        model: 'claude-sonnet-4-20250514',
-                        max_tokens: 1500,
-                        messages: [{
-                            role: 'user',
-                            content: prompt
-                        }]
-                    })
-                });
-
-                const data = await response.json();
-                const story = data.content[0].text;
-
+        // ========================================
+        // STORY GENERATION
+        // ========================================
+        
+        function generateStory(topic) {
+            showStatus('processing', '✨ កំពុងបង្កើតរឿង... Generating story...');
+            
+            setTimeout(() => {
+                const story = generateStoryContent(topic);
                 hideStatus();
-                addMessage(`📚 អត្ថបទអំពី "${topic}":`, 'user');
+                addMessage(`បង្កើតរឿងអំពី "${topic}"`, 'user');
                 addMessage(story, 'ai');
-                speak(story);
-
+                speak(story.split('\n\n')[1]); // Speak the main story content
+                
                 stats.stories++;
                 updateStats();
-
-            } catch (error) {
-                console.error('Error:', error);
-                hideStatus();
-                addMessage('Sorry, I couldn\'t generate the story. Please try again.', 'ai');
-            }
+            }, 1000);
         }
 
-        // បង្កើតរឿងផ្ទាល់ខ្លួន
         function generateCustomStory() {
-            const topic = document.getElementById('customTopic').value.trim();
-            if (topic) {
-                generateStory(topic);
-                document.getElementById('customTopic').value = '';
+            const topicInput = document.getElementById('customTopic');
+            const topic = topicInput.value.trim();
+            
+            if (!topic) {
+                alert('សូមបញ្ចូលប្រធានបទ!\nPlease enter a topic!');
+                return;
             }
+            
+            generateStory(topic);
+            topicInput.value = '';
         }
 
-        // ប្តូរភាសា
+        // ========================================
+        // DIFFICULTY & LANGUAGE
+        // ========================================
+        
+        function setDifficulty(level) {
+            currentDifficulty = level;
+            
+            // Update button states
+            document.getElementById('diffEasy').classList.toggle('active', level === 'easy');
+            document.getElementById('diffMedium').classList.toggle('active', level === 'medium');
+            document.getElementById('diffHard').classList.toggle('active', level === 'hard');
+            
+            const levelText = level === 'easy' ? 'ងាយ Easy' : level === 'medium' ? 'មធ្យម Medium' : 'លំបាក Hard';
+            addMessage(`កំរិតត្រូវបានផ្លាស់ប្តូរទៅ: ${levelText}`, 'ai');
+        }
+
         function switchLanguage(lang) {
             currentLanguage = lang;
             document.getElementById('btnKm').classList.toggle('active', lang === 'km');
             document.getElementById('btnEn').classList.toggle('active', lang === 'en');
         }
 
-        // បង្ហាញស្ថានភាព
+        // ========================================
+        // UTILITY FUNCTIONS
+        // ========================================
+        
+        function useQuickPhrase(phrase) {
+            document.getElementById('userInput').value = phrase;
+            document.getElementById('userInput').focus();
+        }
+
+        function clearChat() {
+            if (confirm('តើអ្នកប្រាកដថាចង់លុបសារទាំងអស់?\nAre you sure you want to clear all messages?')) {
+                const messagesDiv = document.getElementById('chatMessages');
+                messagesDiv.innerHTML = `
+                    <div class="welcome-message">
+                        <h3>👋 សារត្រូវបានលុប! Chat Cleared!</h3>
+                        <p>តោះចាប់ផ្តើមសន្ទនាថ្មី! Let's start a new conversation! 🚀</p>
+                    </div>
+                `;
+            }
+        }
+
         function showStatus(type, message) {
-            const status = document.getElementById('statusIndicator');
-            status.className = `status-indicator ${type}`;
-            status.textContent = message;
-            status.style.display = 'block';
+            const statusBar = document.getElementById('statusBar');
+            statusBar.className = `status-bar ${type}`;
+            statusBar.textContent = message;
+            statusBar.style.display = 'block';
         }
 
-        // លាក់ស្ថានភាព
         function hideStatus() {
-            document.getElementById('statusIndicator').style.display = 'none';
+            const statusBar = document.getElementById('statusBar');
+            statusBar.style.display = 'none';
         }
 
-        // ធ្វើបច្ចុប្បន្នភាពស្ថិតិ
         function updateStats() {
-            document.getElementById('messageCount').textContent = stats.messages;
-            document.getElementById('storyCount').textContent = stats.stories;
-            document.getElementById('voiceCount').textContent = stats.voice;
-
-            // រក្សាទុកក្នុង localStorage
+            document.getElementById('statMessages').textContent = stats.messages;
+            document.getElementById('statStories').textContent = stats.stories;
+            document.getElementById('statVoice').textContent = stats.voice;
+            document.getElementById('statWords').textContent = stats.words;
+            
             localStorage.setItem('englishLearningStats', JSON.stringify(stats));
         }
 
-        // ផ្ទុកស្ថិតិ
         function loadStats() {
             const saved = localStorage.getItem('englishLearningStats');
             if (saved) {
@@ -765,18 +1314,29 @@ Student's message: ${message}`
             }
         }
 
-        // Handle Enter key
         function handleKeyPress(event) {
-            if (event.key === 'Enter') {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
                 sendMessage();
             }
         }
 
-        // ចាប់ផ្តើមពេល load
+        // ========================================
+        // INITIALIZATION
+        // ========================================
+        
         window.onload = () => {
+            console.log('🎓 AI English Learning Pro - Ready!');
+            console.log('✅ No API key needed - Built-in AI');
+            console.log('✅ Works 100% offline (except Text-to-Speech)');
+            
             initSpeechRecognition();
             loadStats();
-            console.log('🎓 AI English Learning Assistant ready!');
+            
+            // Welcome message with voice
+            setTimeout(() => {
+                speak("Welcome to AI English Learning Pro! I'm ready to help you learn English. Let's start!");
+            }, 1000);
         };
     </script>
 </body>
