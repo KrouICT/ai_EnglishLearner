@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎓 AI English Learning - រៀនភាសាអង់គ្លេសជាមួយ AI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Kantumruy Pro', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            padding: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .chat-section {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            height: 600px;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            border: 2px solid #e9ecef;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            padding: 15px;
+            border-radius: 10px;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message.user {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            margin-left: 20%;
+            text-align: right;
+        }
+
+        .message.ai {
+            background: #e3f2fd;
+            color: #1565c0;
+            margin-right: 20%;
+        }
+
+        .message-header {
+            font-weight: bold;
+            margin-bottom: 8px;
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+
+        .message-content {
+            line-height: 1.6;
+            font-size: 1em;
+        }
+
+        .input-area {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .input-area input {
+            flex: 1;
+            padding: 15px;
+            border: 2px solid #667eea;
+            border-radius: 10px;
+            font-size: 1em;
+            font-family: inherit;
+        }
+
+        .input-area input:focus {
+            outline: none;
+            border-color: #764ba2;
+            box-shadow: 0 0 0 3px rgba(118, 75, 162, 0.1);
+        }
+
+        .btn {
+            padding: 15px 25px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #218838;
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .voice-controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .features-section {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .feature-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+            border-left: 5px solid #667eea;
+        }
+
+        .feature-card h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .topic-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .topic-btn {
+            padding: 12px;
+            background: white;
+            border: 2px solid #667eea;
+            border-radius: 10px;
+            color: #667eea;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            font-family: inherit;
+        }
+
+        .topic-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .custom-topic {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .custom-topic input {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #667eea;
+            border-radius: 10px;
+            font-family: inherit;
+        }
+
+        .status-indicator {
+            text-align: center;
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .status-indicator.listening {
+            background: #28a745;
+            color: white;
+            animation: pulse 1.5s infinite;
+        }
+
+        .status-indicator.speaking {
+            background: #007bff;
+            color: white;
+            animation: pulse 1.5s infinite;
+        }
+
+        .status-indicator.processing {
+            background: #ffc107;
+            color: #000;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.7;
+            }
+        }
+
+        .language-switch {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .lang-btn {
+            padding: 10px 20px;
+            border: 2px solid #667eea;
+            background: white;
+            color: #667eea;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .lang-btn.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-left: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .instructions {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 5px solid #ffc107;
+            margin-bottom: 20px;
+        }
+
+        .instructions h4 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+
+        .instructions ul {
+            margin-left: 20px;
+            color: #856404;
+        }
+
+        .instructions li {
+            margin-bottom: 5px;
+        }
+
+        .example-phrases {
+            background: #d1ecf1;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 5px solid #0c5460;
+        }
+
+        .example-phrases h4 {
+            color: #0c5460;
+            margin-bottom: 10px;
+        }
+
+        .example-phrases p {
+            color: #0c5460;
+            margin: 5px 0;
+            padding: 5px 10px;
+            background: white;
+            border-radius: 5px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            border: 2px solid #e9ecef;
+        }
+
+        .stat-card h4 {
+            color: #667eea;
+            font-size: 2em;
+            margin-bottom: 5px;
+        }
+
+        .stat-card p {
+            color: #6c757d;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎓 AI English Learning Assistant</h1>
+            <p>រៀនភាសាអង់គ្លេសជាមួយ AI ដែលអាចនិយាយបាន</p>
+        </div>
+
+        <div class="main-content">
+            <!-- ផ្នែកជជែក -->
+            <div class="chat-section">
+                <div class="language-switch">
+                    <button class="lang-btn active" onclick="switchLanguage('km')" id="btnKm">🇰🇭 ខ្មែរ</button>
+                    <button class="lang-btn" onclick="switchLanguage('en')" id="btnEn">🇬🇧 English</button>
+                </div>
+
+                <div id="statusIndicator" class="status-indicator" style="display: none;"></div>
+
+                <div class="chat-messages" id="chatMessages">
+                    <div class="message ai">
+                        <div class="message-header">🤖 AI Teacher</div>
+                        <div class="message-content">
+                            <strong>ជំរាបសួរ!</strong> I'm your AI English teacher. I can help you learn English through conversation.<br><br>
+                            <strong>អ្នកអាចធ្វើអ្វីបាន៖</strong><br>
+                            • ជជែកជាមួយខ្ញុំដើម្បីអនុវត្តភាសាអង់គ្លេស<br>
+                            • ស្នើសុំឱ្យខ្ញុំបង្កើតអត្ថបទខ្លីៗតាមប្រធានបទ<br>
+                            • និយាយជាមួយខ្ញុំដោយប្រើសំឡេង<br>
+                            • សួរសំណួរណាមួយអំពីភាសាអង់គ្លេស<br><br>
+                            តោះចាប់ផ្តើម! How can I help you today?
+                        </div>
+                    </div>
+                </div>
+
+                <div class="input-area">
+                    <input type="text" id="userInput" placeholder="វាយសារនៅទីនេះ... (Type your message here...)" onkeypress="handleKeyPress(event)">
+                    <button class="btn btn-primary" onclick="sendMessage()">📤 ផ្ញើ</button>
+                </div>
+
+                <div class="voice-controls">
+                    <button class="btn btn-secondary" id="btnListen" onclick="startListening()">🎤 និយាយ (Speak)</button>
+                    <button class="btn btn-danger" id="btnStop" onclick="stopListening()" style="display: none;">⏹️ បញ្ឈប់</button>
+                </div>
+            </div>
+
+            <!-- ផ្នែកមុខងារ -->
+            <div class="features-section">
+                <div class="feature-card">
+                    <h3>📝 បង្កើតអត្ថបទតាមប្រធានបទ</h3>
+                    <p>ជ្រើសរើសប្រធានបទ ឬបញ្ចូលប្រធានបទផ្ទាល់ខ្លួន</p>
+                    <div class="topic-buttons">
+                        <button class="topic-btn" onclick="generateStory('រឿងព្រេងនិទាន')">🧚 រឿងព្រេងនិទាន<br>Fairy Tales</button>
+                        <button class="topic-btn" onclick="generateStory('ការធ្វើដំណើរ')">✈️ ការធ្វើដំណើរ<br>Travel</button>
+                        <button class="topic-btn" onclick="generateStory('បច្ចេកវិទ្យា')">💻 បច្ចេកវិទ្យា<br>Technology</button>
+                        <button class="topic-btn" onclick="generateStory('អាហារ')">🍜 អាហារ<br>Food</button>
+                        <button class="topic-btn" onclick="generateStory('កីឡា')">⚽ កីឡា<br>Sports</button>
+                        <button class="topic-btn" onclick="generateStory('តន្ត្រី')">🎵 តន្ត្រី<br>Music</button>
+                    </div>
+                    <div class="custom-topic">
+                        <input type="text" id="customTopic" placeholder="បញ្ចូលប្រធានបទផ្ទាល់ខ្លួន...">
+                        <button class="btn btn-primary" onclick="generateCustomStory()">✨ បង្កើត</button>
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <h3>💡 គន្លឹះរៀនភាសា</h3>
+                    <div class="instructions">
+                        <h4>របៀបប្រើប្រាស់៖</h4>
+                        <ul>
+                            <li><strong>វាយសារ</strong> ឬ <strong>និយាយ</strong> ជាភាសាអង់គ្លេស ឬខ្មែរ</li>
+                            <li>AI នឹងឆ្លើយតបជាភាសាអង់គ្លេស</li>
+                            <li>ស្នើសុំឱ្យ AI បង្កើតអត្ថបទតាមប្រធានបទ</li>
+                            <li>សួរសំណួរអំពីវេយ្យាករណ៍ ឬពាក្យ</li>
+                        </ul>
+                    </div>
+
+                    <div class="example-phrases">
+                        <h4>ឧទាហរណ៍ប្រយោគ៖</h4>
+                        <p>✅ "Tell me a story about a brave knight"</p>
+                        <p>✅ "How do I use past tense?"</p>
+                        <p>✅ "Create a dialogue at a restaurant"</p>
+                        <p>✅ "ប្រាប់ខ្ញុំអំពីសត្វមួយជាភាសាអង់គ្លេស"</p>
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <h3>📊 ស្ថិតិរបស់អ្នក</h3>
+                    <div class="stats">
+                        <div class="stat-card">
+                            <h4 id="messageCount">0</h4>
+                            <p>សារ<br>Messages</p>
+                        </div>
+                        <div class="stat-card">
+                            <h4 id="storyCount">0</h4>
+                            <p>អត្ថបទ<br>Stories</p>
+                        </div>
+                        <div class="stat-card">
+                            <h4 id="voiceCount">0</h4>
+                            <p>សំឡេង<br>Voice</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ការកំណត់
+        let currentLanguage = 'km';
+        let recognition = null;
+        let synthesis = window.speechSynthesis;
+        let isListening = false;
+        let stats = {
+            messages: 0,
+            stories: 0,
+            voice: 0
+        };
+
+        // ចាប់ផ្តើម Speech Recognition
+        function initSpeechRecognition() {
+            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                recognition = new SpeechRecognition();
+                recognition.continuous = false;
+                recognition.interimResults = false;
+                recognition.lang = 'en-US';
+
+                recognition.onstart = () => {
+                    isListening = true;
+                    showStatus('listening', 'កំពុងស្តាប់... Listening...');
+                    document.getElementById('btnListen').style.display = 'none';
+                    document.getElementById('btnStop').style.display = 'inline-block';
+                };
+
+                recognition.onresult = (event) => {
+                    const transcript = event.results[0][0].transcript;
+                    document.getElementById('userInput').value = transcript;
+                    sendMessage();
+                };
+
+                recognition.onerror = (event) => {
+                    console.error('Speech recognition error:', event.error);
+                    showStatus('error', 'មានបញ្ហា! Error: ' + event.error);
+                    resetVoiceButtons();
+                };
+
+                recognition.onend = () => {
+                    resetVoiceButtons();
+                };
+            } else {
+                console.log('Speech recognition not supported');
+            }
+        }
+
+        // ចាប់ផ្តើមស្តាប់
+        function startListening() {
+            if (recognition) {
+                try {
+                    recognition.start();
+                    stats.voice++;
+                    updateStats();
+                } catch (e) {
+                    console.error('Error starting recognition:', e);
+                }
+            } else {
+                alert('Speech recognition is not supported in your browser. Please use Chrome or Edge.');
+            }
+        }
+
+        // បញ្ឈប់ស្តាប់
+        function stopListening() {
+            if (recognition && isListening) {
+                recognition.stop();
+            }
+        }
+
+        // Reset voice buttons
+        function resetVoiceButtons() {
+            isListening = false;
+            document.getElementById('btnListen').style.display = 'inline-block';
+            document.getElementById('btnStop').style.display = 'none';
+            hideStatus();
+        }
+
+        // Text-to-Speech
+        function speak(text) {
+            if (synthesis) {
+                // Cancel any ongoing speech
+                synthesis.cancel();
+
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'en-US';
+                utterance.rate = 0.9;
+                utterance.pitch = 1;
+
+                utterance.onstart = () => {
+                    showStatus('speaking', 'កំពុងនិយាយ... Speaking...');
+                };
+
+                utterance.onend = () => {
+                    hideStatus();
+                };
+
+                utterance.onerror = (event) => {
+                    console.error('Speech synthesis error:', event);
+                    hideStatus();
+                };
+
+                synthesis.speak(utterance);
+            }
+        }
+
+        // បញ្ជូនសារ
+        async function sendMessage() {
+            const input = document.getElementById('userInput');
+            const message = input.value.trim();
+
+            if (!message) return;
+
+            // បង្ហាញសាររបស់អ្នកប្រើប្រាស់
+            addMessage(message, 'user');
+            input.value = '';
+
+            // បង្ហាញស្ថានភាព processing
+            showStatus('processing', 'កំពុងដំណើរការ... Processing...');
+
+            // ហៅ Claude API
+            try {
+                const response = await fetch('https://api.anthropic.com/v1/messages', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        model: 'claude-sonnet-4-20250514',
+                        max_tokens: 1500,
+                        messages: [{
+                            role: 'user',
+                            content: `You are an expert English teacher helping students learn English. The student may speak in Khmer or English. Always respond in clear, simple English that's appropriate for language learners. Be encouraging and helpful.
+
+If they ask you to create a story or content about a topic, write an interesting short passage (2-3 paragraphs) in English about that topic, using clear language and interesting vocabulary.
+
+Student's message: ${message}`
+                        }]
+                    })
+                });
+
+                const data = await response.json();
+                const aiResponse = data.content[0].text;
+
+                hideStatus();
+                addMessage(aiResponse, 'ai');
+                speak(aiResponse);
+
+                stats.messages++;
+                updateStats();
+
+            } catch (error) {
+                console.error('Error:', error);
+                hideStatus();
+                addMessage('Sorry, I encountered an error. Please try again. សូមអភ័យទោស មានបញ្ហាបច្ចេកទេស។', 'ai');
+            }
+        }
+
+        // បន្ថែមសារទៅ chat
+        function addMessage(text, type) {
+            const messagesDiv = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type}`;
+
+            const header = document.createElement('div');
+            header.className = 'message-header';
+            header.textContent = type === 'user' ? '👤 អ្នក (You)' : '🤖 AI Teacher';
+
+            const content = document.createElement('div');
+            content.className = 'message-content';
+            content.textContent = text;
+
+            messageDiv.appendChild(header);
+            messageDiv.appendChild(content);
+            messagesDiv.appendChild(messageDiv);
+
+            // Scroll to bottom
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        // បង្កើតរឿងតាមប្រធានបទ
+        async function generateStory(topic) {
+            showStatus('processing', 'កំពុងបង្កើតអត្ថបទ... Creating story...');
+
+            const prompt = `Create an interesting short story or passage (2-3 paragraphs) in English about "${topic}". Use clear, engaging language that's appropriate for English learners. Include some descriptive vocabulary but keep sentences relatively simple.`;
+
+            try {
+                const response = await fetch('https://api.anthropic.com/v1/messages', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        model: 'claude-sonnet-4-20250514',
+                        max_tokens: 1500,
+                        messages: [{
+                            role: 'user',
+                            content: prompt
+                        }]
+                    })
+                });
+
+                const data = await response.json();
+                const story = data.content[0].text;
+
+                hideStatus();
+                addMessage(`📚 អត្ថបទអំពី "${topic}":`, 'user');
+                addMessage(story, 'ai');
+                speak(story);
+
+                stats.stories++;
+                updateStats();
+
+            } catch (error) {
+                console.error('Error:', error);
+                hideStatus();
+                addMessage('Sorry, I couldn\'t generate the story. Please try again.', 'ai');
+            }
+        }
+
+        // បង្កើតរឿងផ្ទាល់ខ្លួន
+        function generateCustomStory() {
+            const topic = document.getElementById('customTopic').value.trim();
+            if (topic) {
+                generateStory(topic);
+                document.getElementById('customTopic').value = '';
+            }
+        }
+
+        // ប្តូរភាសា
+        function switchLanguage(lang) {
+            currentLanguage = lang;
+            document.getElementById('btnKm').classList.toggle('active', lang === 'km');
+            document.getElementById('btnEn').classList.toggle('active', lang === 'en');
+        }
+
+        // បង្ហាញស្ថានភាព
+        function showStatus(type, message) {
+            const status = document.getElementById('statusIndicator');
+            status.className = `status-indicator ${type}`;
+            status.textContent = message;
+            status.style.display = 'block';
+        }
+
+        // លាក់ស្ថានភាព
+        function hideStatus() {
+            document.getElementById('statusIndicator').style.display = 'none';
+        }
+
+        // ធ្វើបច្ចុប្បន្នភាពស្ថិតិ
+        function updateStats() {
+            document.getElementById('messageCount').textContent = stats.messages;
+            document.getElementById('storyCount').textContent = stats.stories;
+            document.getElementById('voiceCount').textContent = stats.voice;
+
+            // រក្សាទុកក្នុង localStorage
+            localStorage.setItem('englishLearningStats', JSON.stringify(stats));
+        }
+
+        // ផ្ទុកស្ថិតិ
+        function loadStats() {
+            const saved = localStorage.getItem('englishLearningStats');
+            if (saved) {
+                stats = JSON.parse(saved);
+                updateStats();
+            }
+        }
+
+        // Handle Enter key
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        // ចាប់ផ្តើមពេល load
+        window.onload = () => {
+            initSpeechRecognition();
+            loadStats();
+            console.log('🎓 AI English Learning Assistant ready!');
+        };
+    </script>
+</body>
+</html>
